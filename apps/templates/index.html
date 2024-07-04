@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block Body %}
+    <h1 class="text-center">Tasks page</h1>
+    <div class="container">
+        <div class="row">
+            {% for task in tasks %}
+                <div class="col-md-4 mb-4">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            {% if task.status == "OP" %}
+                                <h2 class="card-title" style="color: #29c8e1">Opened</h2>
+                            {% elif task.status == "IP" %}
+                                <h2 class="card-title" style="color: #fca400">In Progress</h2>
+                            {% elif task.status == "PA" %}
+                                <h2 class="card-title" style="color: #f42c17">Paused</h2>
+                            {% elif task.status == "CO" %}
+                                <h2 class="card-title" style="color: #00fc2a">Completed</h2>
+                            {% endif %}
+                            <h3>{{ task.title }}</h3>
+                            <h5>{{ task.date_added|date:"H:i  M d, Y" }}</h5>
+                            <p class="card-text">{{ task.description }}</p>
+                            <a class="btn btn-primary" href="{% url 'base:edit_task' task.id %}">Edit</a>
+                            <a class="btn btn-danger" href="{% url 'base:delete_task' task.id %}">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="d-flex justify-content-center mt-4">
+        <nav>
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1"> << </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}"> < </a>
+                    </li>
+                {% endif %}
+
+                <li class="page-item disabled">
+                    <span class="page-link">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                    </span>
+                </li>
+
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}"> > </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}"> >> </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+{% endblock %}

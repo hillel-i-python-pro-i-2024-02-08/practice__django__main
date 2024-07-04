@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block Body %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h2 class="card-title text-danger">Confirm delete</h2>
+                        <p class="card-text">Are you sure you want delete "{{ task.title }}"?</p>
+                        <div class="d-flex justify-content-around mt-4">
+                            <form method="post" action="{% url 'base:delete_task' task.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger">Confirm</button>
+                            </form>
+                            <a href="{% url 'base:index' %}" class="btn btn-light border">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
